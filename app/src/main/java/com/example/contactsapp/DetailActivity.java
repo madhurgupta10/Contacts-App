@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.contactsapp.model.CustomContact;
+import com.google.android.material.snackbar.Snackbar;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -21,11 +22,16 @@ public class DetailActivity extends AppCompatActivity {
 
         CustomContact customContact = (CustomContact) getIntent().getSerializableExtra("customContact");
 
+        // Checks if the customContact Object is null or not
         if (customContact != null) {
             initViews(customContact);
+        } else {
+            Snackbar.make(findViewById(android.R.id.content), getString(R.string.sorry),
+                    Snackbar.LENGTH_LONG).show();
         }
     }
 
+    // Initialises the Views
     private void initViews(final CustomContact customContact) {
 
         TextView nameTextView = findViewById(R.id.name);
@@ -58,6 +64,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        // If profile pic is null then the visibility will remain GONE
         ImageView profilePicImageView = findViewById(R.id.profile_pic);
         if (customContact.getProfilePicUri() != null) {
             profilePicImageView.setImageURI(Uri.parse(customContact.getProfilePicUri()));
@@ -65,11 +72,13 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
+    // Opens the Call Dialer with the number
     private void openCallApp(String number) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
         startActivity(callIntent);
     }
 
+    // Opens the Message App with the number
     private void openMessageApp(String number) {
         Intent sendIntent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", number, null));
         startActivity(sendIntent);

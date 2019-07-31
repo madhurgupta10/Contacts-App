@@ -36,11 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViews() {
 
+        // Initiate the views
+
         listView = findViewById(R.id.list_view);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // If permission is not granted then the user will get a prompt to grant permission
         if ((checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
             && (checkSelfPermission(Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED)) {
             requestPermissions(new String[] {
@@ -54,8 +57,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showContacts() {
+        // This method fetch the contacts from the helper class and then displays them in a list view
         cursor = ContactHelper.getContactCursor(getContentResolver(), "");
         String[] fields = new String[]{ContactsContract.Data.DISPLAY_NAME};
+
+        // We are using a SimpleCursor Adapter for the List View
         adapter = new SimpleCursorAdapter(this, android.R.layout.simple_expandable_list_item_1,
                 cursor, fields, new int[]{android.R.id.text1});
         listView.setAdapter(adapter);
@@ -79,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
+        // Asks user for the permission
         if (requestCode == PERMISSION_READ_WRITE_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showContacts();

@@ -12,6 +12,11 @@ import java.util.ArrayList;
 
 public class ContactHelper {
 
+    /**
+     * @param contactHelper is a Content Resolver
+     * @param startsWith can be an empty string if we want to fetch all details or a string can be passed
+     * @return This method returns a Cursor for the contacts with ID, NAME, NUMBER and PROFILE_PIC URI in ascending order
+     */
     public static Cursor getContactCursor(ContentResolver contactHelper, String startsWith) {
 
         String[] projection = {ContactsContract.CommonDataKinds.Phone._ID,
@@ -48,6 +53,7 @@ public class ContactHelper {
         return cursor;
     }
 
+    // This method will create a new contact
     public static void createContact(ContentResolver contactHelper, String name, String number,
                                      String email) {
 
@@ -102,6 +108,7 @@ public class ContactHelper {
         }
     }
 
+    // This method will remove a contact
     public static void deleteContact(ContentResolver contactHelper, String number) {
 
         ArrayList<ContentProviderOperation> operations = new ArrayList<>();
@@ -120,6 +127,7 @@ public class ContactHelper {
 
     }
 
+    // Returns the ContactId
     private static long getContactId(ContentResolver contactHelper, String number) {
         Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
                 Uri.encode(number));

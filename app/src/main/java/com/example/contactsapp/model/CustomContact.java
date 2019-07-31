@@ -2,7 +2,9 @@ package com.example.contactsapp.model;
 
 import android.database.Cursor;
 
-public class CustomContact {
+import java.io.Serializable;
+
+public class CustomContact implements Serializable {
 
     private String _id;
     private String name;

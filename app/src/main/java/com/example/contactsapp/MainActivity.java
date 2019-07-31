@@ -1,6 +1,7 @@
 package com.example.contactsapp;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.contactsapp.helper.ContactHelper;
 import com.example.contactsapp.model.CustomContact;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initViews();
     }
 
@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
                 cursor.moveToPosition(position);
                 CustomContact customContact = new CustomContact(cursor);
-                Toast.makeText(MainActivity.this, ""+customContact.getPhoneNumber(),
-                        Toast.LENGTH_SHORT).show();
+                Intent intent =  new Intent(MainActivity.this, DetailActivity.class);
+                intent.putExtra("customContact", customContact);
+                startActivity(intent);
             }
         };
 
@@ -82,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 showContacts();
             } else {
-                Toast.makeText(MainActivity.this, R.string.grant_contact_permission,
-                        Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), R.string.grant_contact_permission,
+                        Snackbar.LENGTH_LONG).show();
             }
         }
     }
